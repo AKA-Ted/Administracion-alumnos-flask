@@ -1,0 +1,14 @@
+DROP DATABASE IF EXISTS alumnos;
+CREATE DATABASE ALUMNOS;
+
+USE ALUMNOS;
+
+DROP TABLE IF EXISTS tAlumnos;
+CREATE TABLE tAlumnos(
+    boleta INT(20) PRIMARY KEY,
+    nombre VARCHAR(50),
+    aPaterno VARCHAR(50),
+    aMaterno VARCHAR(50),
+    CURP VARCHAR(18),
+    activo BOOLEAN 
+);
