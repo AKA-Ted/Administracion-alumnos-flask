@@ -12,35 +12,35 @@
                     <div class="form-group row">
                     <label for="inputBoleta" class="col-sm-2 col-form-label">Boleta:</label>
                     <div class="col-sm-10">
-                        <input type="tel" required="required" class="form-control" name="inputBoleta" pattern="[0-9]{10}" title="Ingresa 10 números de boleta">
+                        <input type="tel" required="required" class="form-control" name="inputBoleta" pattern="[0-9]{10}" title="Ingresa los 10 números de boleta">
                     </div>
                     </div>
                     <!-- Apellido Paterno -->
                     <div class="form-group row">
                         <label for="inputAPat" class="col-sm-2 col-form-label">Primer apellido:</label>
                         <div class="col-sm-10">
-                        <input type="text" required="required" class="form-control" name="inputAPat">
+                        <input type="text" required="required" class="form-control" name="inputAPat" pattern="[a-zA-Z]+" title="Sólo puedes ingresar letras">
                         </div>
                     </div>
                     <!-- Apellido Materno -->
                     <div class="form-group row">
                         <label for="inputAMat" class="col-sm-2 col-form-label">Segundo apellido:</label>
                         <div class="col-sm-10">
-                        <input type="text" required="required" class="form-control" name="inputAMat">
+                        <input type="text" class="form-control" name="inputAMat" pattern="[a-zA-Z]+" title="Sólo puedes ingresar letras">
                         </div>
                     </div>
                     <!-- Nombre -->
                     <div class="form-group row">
                         <label for="inputNombre" class="col-sm-2 col-form-label">Nombre(s):</label>
                         <div class="col-sm-10">
-                        <input type="text" required="required" class="form-control" name="inputNombre">
+                        <input type="text" required="required" class="form-control" name="inputNombre" pattern="[a-zA-Z]+" title="Sólo puedes ingresar letras">
                         </div>
                     </div>
                     <!-- CURP -->
                     <div class="form-group row">
                         <label for="inputCurp" class="col-sm-2 col-form-label">CURP:</label>
                         <div class="col-sm-10">
-                        <input type="text" required="required" class="form-control" name="inputCurp">
+                        <input type="text" required="required" class="form-control" name="inputCurp" pattern="[A-Z]{4}[0-9]{6}[A-Z]{6}[0-9]{2}" title="Ingresa un formato válido de CURP">
                         </div>
                     </div>
             </div>
@@ -73,37 +73,37 @@
                     </div>
                     <!-- Boleta -->
                     <div class="form-group row">
-                    <label for="inputBoleta" class="col-sm-2 col-form-label">Boleta:</label>
+                        <label for="inputBoleta" class="col-sm-2 col-form-label">Boleta:</label>
                     <div class="col-sm-10">
-                        <input type="tel" required="required" class="form-control" name="inputBoleta" pattern="[0-9]{10}" title="Ingresa 10 números de boleta" value="{{row.1}}">
+                        <input type="tel" required="required" class="form-control" name="inputBoleta" pattern="[0-9]{10}" title="Ingresa los 10 números de boleta" value="{{row.1}}">
                     </div>
                     </div>
                     <!-- Apellido Paterno -->
                     <div class="form-group row">
                         <label for="inputAPat" class="col-sm-2 col-form-label">Primer apellido:</label>
                         <div class="col-sm-10">
-                        <input type="text" required="required" class="form-control" name="inputAPat" value="{{row.2}}">
+                        <input type="text" required="required" class="form-control" name="inputAPat" pattern="[a-zA-Z]+" title="Sólo puedes ingresar letras" value="{{row.2}}">
                         </div>
                     </div>
                     <!-- Apellido Materno -->
                     <div class="form-group row">
                         <label for="inputAMat" class="col-sm-2 col-form-label">Segundo apellido:</label>
                         <div class="col-sm-10">
-                        <input type="text" required="required" class="form-control" name="inputAMat" value="{{row.3}}">
+                        <input type="text" class="form-control" name="inputAMat" pattern="[a-zA-Z]+" title="Sólo puedes ingresar letras" value="{{row.3}}">
                         </div>
                     </div>
                     <!-- Nombre -->
                     <div class="form-group row">
                         <label for="inputNombre" class="col-sm-2 col-form-label">Nombre(s):</label>
                         <div class="col-sm-10">
-                        <input type="text" required="required" class="form-control" name="inputNombre" value="{{row.4}}">
+                        <input type="text" required="required" class="form-control" name="inputNombre" pattern="[a-zA-Z]+" title="Sólo puedes ingresar letras" value="{{row.4}}">
                         </div>
                     </div>
                     <!-- CURP -->
                     <div class="form-group row">
                         <label for="inputCurp" class="col-sm-2 col-form-label">CURP:</label>
                         <div class="col-sm-10">
-                        <input type="text" required="required" class="form-control" name="inputCurp" value="{{row.5}}">
+                        <input type="text" required="required" class="form-control" name="inputCurp" pattern="[A-Z]{4}[0-9]{6}[A-Z]{6}[0-9]{2}" title="Ingresa un formato válido de CURP" value="{{row.5}}">
                         </div>
                     </div>
             </div>
