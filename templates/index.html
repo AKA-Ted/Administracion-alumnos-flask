@@ -63,9 +63,9 @@
                     <td>{{row.5}}</td>
                     <td>
                         {%if row.6 == 0%}                            
-                            <i class="fa fa-play fa-2x">&nbsp;&nbsp;</i> 
+                            <i class="fa fa-play fa-2x data" data-toggle="modal" data-target="#modalActivar{{row.0}}">&nbsp;&nbsp;</i> 
                             <i class="fa fa-pencil fa-2x" data-toggle="modal" data-target="#modalEditar{{row.0}}">&nbsp;&nbsp;</i> 
-                            <i class="fa fa-ban fa-2x" data-toggle="modal" data-target="#modalBaja">&nbsp;&nbsp;</i> 
+                            <i class="fa fa-ban fa-2x" data-toggle="modal" data-target="#modalBaja{{row.0}}">&nbsp;&nbsp;</i> 
                         {%else%}   
                             <i class="fa fa-stop fa-2x" data-toggle="modal" data-target="#modalDesactivar{{row.0}}">&nbsp;&nbsp;</i>
                             <i class="fa fa-pencil fa-2x" data-toggle="modal" data-target="#modalEditar{{row.0}}">&nbsp;&nbsp;</i> 
@@ -137,7 +137,7 @@
 
     <!-- Modal Activar Alumno -->
     {% for row in alumnos %}
-    <div class="modal fade" id="modalDesactivar{{row.0}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="modalActivar{{row.0}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -279,34 +279,6 @@
             </form>
 
         </div>
-        </div>
-    </div>
-    {% endfor %}
-
-    <!-- Modal Baja Alumno -->
-    {% for row in alumnos %}
-    <div class="modal fade" id="modalBaja{{row.0}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Baja definitiva de alumno</h5>
-            </div>
-            <form method="POST" action="{{url_for('delete')}}">
-                <div class="modal-body">
-                    <!-- ID -->
-                    ¿Estás seguro de dar de baja al alumno: {{row.2}} {{row.3}} {{row.4}} con boleta: {{row.1}} y CURP {{row.5}}?
-                    <div class="form-group row">
-                        <div class="col-sm-10">
-                            <input type="hidden" required="required" class="form-control" name="id" value="{{row.0}}">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-outline-primary">Aceptar</button>
-                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Cancelar</button>
-                </div>
-            </form>
-          </div>
         </div>
     </div>
     {% endfor %}
