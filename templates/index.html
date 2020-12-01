@@ -1,15 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Alumnos</title>
-    <link rel="stylesheet" href="https://bootswatch.com/4/materia/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
-</head>
-<body>
+{% include "header.html" %}
+
     {% block body %}
     
     <!-- Título -->
@@ -26,14 +16,16 @@
         <div class="well text-center">            
             {%with messages = get_flashed_messages()%}
                 {%if messages%}
-                    {% for message in messages %}
-                    <div class="alert alert-success alert-dismissable fade show" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label ="close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                        {{message}}
-                    </div>
-                    {%endfor%}
+                    {%if messages[-1]%}
+                        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label ="close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                            {{messages[-1]}}
+                        </div>
+                    {%else%}
+                        {{messages[0]}}
+                    {%endif%}
                 {%endif%}
             {%endwith%}
         </div>
@@ -49,7 +41,7 @@
                     <th scope="col">Primer Apellido</th>
                     <th scope="col">Segundo Apellido</th>
                     <th scope="col">Nombre(s)</th>
-                    <th scope="col">Curp</th>
+                    <th scope="col">CURP</th>
                     <th scope="col">Acciones</th>
                   </tr>
                 </thead>
@@ -66,10 +58,12 @@
                             <i class="fa fa-play fa-2x data" data-toggle="modal" data-target="#modalActivar{{row.0}}">&nbsp;&nbsp;</i> 
                             <i class="fa fa-pencil fa-2x" data-toggle="modal" data-target="#modalEditar{{row.0}}">&nbsp;&nbsp;</i> 
                             <i class="fa fa-ban fa-2x" data-toggle="modal" data-target="#modalBaja{{row.0}}">&nbsp;&nbsp;</i> 
-                        {%else%}   
+                        {%elif row.6 == 1%}   
                             <i class="fa fa-stop fa-2x" data-toggle="modal" data-target="#modalDesactivar{{row.0}}">&nbsp;&nbsp;</i>
                             <i class="fa fa-pencil fa-2x" data-toggle="modal" data-target="#modalEditar{{row.0}}">&nbsp;&nbsp;</i> 
                             <i class="fa fa-ban fa-2x" data-toggle="modal" data-target="#modalBaja{{row.0}}">&nbsp;&nbsp;</i> 
+                        {%else%}
+                            <!-- El alumno desactivado no tiene funciones -->
                         {%endif%}
                     </td>
                   </tr>
@@ -79,209 +73,7 @@
         </div>
     </div>
 
-    <!-- Modal Baja Alumno -->
-    {% for row in alumnos %}
-    <div class="modal fade" id="modalBaja{{row.0}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Baja definitiva de alumno</h5>
-            </div>
-            <form method="POST" action="{{url_for('delete')}}">
-                <div class="modal-body">
-                    <!-- ID -->
-                    ¿Estás seguro de dar de baja al alumno: {{row.2}} {{row.3}} {{row.4}} con boleta: {{row.1}} y CURP {{row.5}}?
-                    <div class="form-group row">
-                        <div class="col-sm-10">
-                            <input type="hidden" required="required" class="form-control" name="id" value="{{row.0}}">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-outline-primary">Aceptar</button>
-                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Cancelar</button>
-                </div>
-            </form>
-          </div>
-        </div>
-    </div>
-    {% endfor %}
-
-    <!-- Modal Desactivar Alumno -->
-    {% for row in alumnos %}
-    <div class="modal fade" id="modalDesactivar{{row.0}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Desactivar alumno</h5>
-            </div>
-            <form method="POST" action="{{url_for('desactivar')}}">
-                <div class="modal-body">
-                    <!-- ID -->
-                    ¿Estás seguro de desactivar al alumno: {{row.2}} {{row.3}} {{row.4}} con boleta: {{row.1}} y CURP {{row.5}}?
-                    <div class="form-group row">
-                        <div class="col-sm-10">
-                            <input type="hidden" required="required" class="form-control" name="id" value="{{row.0}}">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-outline-primary">Aceptar</button>
-                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Cancelar</button>
-                </div>
-            </form>
-          </div>
-        </div>
-    </div>
-    {% endfor %}
-
-    <!-- Modal Activar Alumno -->
-    {% for row in alumnos %}
-    <div class="modal fade" id="modalActivar{{row.0}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Activar alumno</h5>
-            </div>
-            <form method="POST" action="{{url_for('activar')}}">
-                <div class="modal-body">
-                    <!-- ID -->
-                    ¿Estás seguro de activar al alumno: {{row.2}} {{row.3}} {{row.4}} con boleta: {{row.1}} y CURP {{row.5}}?
-                    <div class="form-group row">
-                        <div class="col-sm-10">
-                            <input type="hidden" required="required" class="form-control" name="id" value="{{row.0}}">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-outline-primary">Aceptar</button>
-                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Cancelar</button>
-                </div>
-            </form>
-          </div>
-        </div>
-    </div>
-    {% endfor %}
-
-    <!-- Modal Registrar Alumno -->
-    <div class="modal fade" id="modalRegistrar" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Registrar Alumno</h5>
-            </div>
-            
-            <form method="POST" action="{{url_for('insert')}}">
-                <div class="modal-body">
-                        <!-- Boleta -->
-                        <div class="form-group row">
-                        <label for="inputBoleta" class="col-sm-2 col-form-label">Boleta:</label>
-                        <div class="col-sm-10">
-                            <input type="tel" required="required" class="form-control" name="inputBoleta" pattern="[0-9]{10}" title="Ingresa 10 números de boleta">
-                        </div>
-                        </div>
-                        <!-- Apellido Paterno -->
-                        <div class="form-group row">
-                            <label for="inputAPat" class="col-sm-2 col-form-label">Primer apellido:</label>
-                            <div class="col-sm-10">
-                            <input type="text" required="required" class="form-control" name="inputAPat">
-                            </div>
-                        </div>
-                        <!-- Apellido Materno -->
-                        <div class="form-group row">
-                            <label for="inputAMat" class="col-sm-2 col-form-label">Segundo apellido:</label>
-                            <div class="col-sm-10">
-                            <input type="text" required="required" class="form-control" name="inputAMat">
-                            </div>
-                        </div>
-                        <!-- Nombre -->
-                        <div class="form-group row">
-                            <label for="inputNombre" class="col-sm-2 col-form-label">Nombre(s):</label>
-                            <div class="col-sm-10">
-                            <input type="text" required="required" class="form-control" name="inputNombre">
-                            </div>
-                        </div>
-                        <!-- CURP -->
-                        <div class="form-group row">
-                            <label for="inputCurp" class="col-sm-2 col-form-label">CURP:</label>
-                            <div class="col-sm-10">
-                            <input type="text" required="required" class="form-control" name="inputCurp">
-                            </div>
-                        </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-outline-primary">Aceptar</button>
-                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Cancelar</button>
-                </div>
-            </form>
-
-        </div>
-        </div>
-    </div>
-
-    <!-- Modal Editar Alumno -->
-    {% for row in alumnos %}
-    <div class="modal fade" id="modalEditar{{row.0}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Editar información del alumno</h5>
-            </div>
-            
-            <form method="POST" action="{{url_for('update')}}">
-                <div class="modal-body">
-                        <!-- ID -->
-                        <div class="form-group row">
-                            <div class="col-sm-10">
-                                <input type="hidden" required="required" class="form-control" name="id" value="{{row.0}}">
-                            </div>
-                        </div>
-                        <!-- Boleta -->
-                        <div class="form-group row">
-                        <label for="inputBoleta" class="col-sm-2 col-form-label">Boleta:</label>
-                        <div class="col-sm-10">
-                            <input type="tel" required="required" class="form-control" name="inputBoleta" pattern="[0-9]{10}" title="Ingresa 10 números de boleta" value="{{row.1}}">
-                        </div>
-                        </div>
-                        <!-- Apellido Paterno -->
-                        <div class="form-group row">
-                            <label for="inputAPat" class="col-sm-2 col-form-label">Primer apellido:</label>
-                            <div class="col-sm-10">
-                            <input type="text" required="required" class="form-control" name="inputAPat" value="{{row.2}}">
-                            </div>
-                        </div>
-                        <!-- Apellido Materno -->
-                        <div class="form-group row">
-                            <label for="inputAMat" class="col-sm-2 col-form-label">Segundo apellido:</label>
-                            <div class="col-sm-10">
-                            <input type="text" required="required" class="form-control" name="inputAMat" value="{{row.3}}">
-                            </div>
-                        </div>
-                        <!-- Nombre -->
-                        <div class="form-group row">
-                            <label for="inputNombre" class="col-sm-2 col-form-label">Nombre(s):</label>
-                            <div class="col-sm-10">
-                            <input type="text" required="required" class="form-control" name="inputNombre" value="{{row.4}}">
-                            </div>
-                        </div>
-                        <!-- CURP -->
-                        <div class="form-group row">
-                            <label for="inputCurp" class="col-sm-2 col-form-label">CURP:</label>
-                            <div class="col-sm-10">
-                            <input type="text" required="required" class="form-control" name="inputCurp" value="{{row.5}}">
-                            </div>
-                        </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-outline-primary">Aceptar</button>
-                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Cancelar</button>
-                </div>
-            </form>
-
-        </div>
-        </div>
-    </div>
-    {% endfor %}
+    {% include "modales.html" %}
     
     <!-- Botón Registrar Alumno  -->
     <div class="container">
@@ -289,14 +81,7 @@
             <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#modalRegistrar">Registrar</button>
         </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" ></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
-    <script src="{{url_for('static', filename='js/jquery-slim.min.js')}}"></script>
-
-
+    
     {% endblock %}
-</body>
-</html>
+
+{% include "footer.html" %}

@@ -6,11 +6,11 @@ USE ALUMNOS;
 DROP TABLE IF EXISTS tAlumnos;
 CREATE TABLE tAlumnos(
     id INT AUTO_INCREMENT PRIMARY KEY,
-    boleta INT ,
+    boleta INT UNIQUE ,
     nombre VARCHAR(255),
     aPaterno VARCHAR(255),
     aMaterno VARCHAR(255),
-    CURP VARCHAR(255),
+    CURP VARCHAR(255) UNIQUE ,
     activo TINYINT(1)
 );
 

@@ -24,41 +24,50 @@ def Index():
 @app.route('/insert', methods = ['POST'])
 def insert():
     if request.method == "POST":
-        flash("Se agregó correctamente")
-        boleta = request.form['inputBoleta']
-        aPat = request.form['inputAPat']
-        aMat = request.form['inputAMat']
-        nombre = request.form['inputNombre']
-        curp = request.form['inputCurp']
+        try:
+            flash("Se agregó correctamente")
+            boleta = request.form['inputBoleta']
+            aPat = request.form['inputAPat']
+            aMat = request.form['inputAMat']
+            nombre = request.form['inputNombre']
+            curp = request.form['inputCurp']
 
-        cur = mysql.connection.cursor()
-        cur.execute("""
-            INSERT INTO tAlumnos(boleta, nombre, aPaterno, aMaterno, CURP, activo) 
-            VALUES (%s, %s, %s, %s, %s, %s)
-            """, (boleta, aPat, aMat, nombre, curp, 1))
-        mysql.connection.commit()
+            cur = mysql.connection.cursor()
+            cur.execute("""
+                INSERT INTO tAlumnos(boleta, nombre, aPaterno, aMaterno, CURP, activo) 
+                VALUES (%s, %s, %s, %s, %s, %s)
+                """, (boleta, aPat, aMat, nombre, curp, 1))
+            mysql.connection.commit()
 
-        return redirect(url_for('Index'))
+            return redirect(url_for('Index'))
+        except:
+            flash("No se peude agregar boleta o CURP existentes")
+            return redirect(url_for('Index'))
+
 
 @app.route('/update', methods = ['POST', 'GET'])
 def update():
     if request.method == 'POST':
-        flash("Se actualizó correctamente")
-        id_data = request.form['id']
-        boleta = request.form['inputBoleta']
-        aPat = request.form['inputAPat']
-        aMat = request.form['inputAMat']
-        nombre = request.form['inputNombre']
-        curp = request.form['inputCurp']
+        try:
+            flash("Se actualizó correctamente")
+            id_data = request.form['id']
+            boleta = request.form['inputBoleta']
+            aPat = request.form['inputAPat']
+            aMat = request.form['inputAMat']
+            nombre = request.form['inputNombre']
+            curp = request.form['inputCurp']
 
-        cur = mysql.connection.cursor()
-        cur.execute("""
-            UPDATE tAlumnos
-            SET boleta = %s, nombre = %s, aPaterno = %s, aMaterno = %s, CURP = %s
-            WHERE id=%s
-        """, (boleta, aPat, aMat, nombre, curp, id_data))
-        mysql.connection.commit()
-        return redirect(url_for('Index'))
+            cur = mysql.connection.cursor()
+            cur.execute("""
+                UPDATE tAlumnos
+                SET boleta = %s, nombre = %s, aPaterno = %s, aMaterno = %s, CURP = %s
+                WHERE id=%s
+            """, (boleta, aPat, aMat, nombre, curp, id_data))
+            mysql.connection.commit()
+            return redirect(url_for('Index'))
+        except:
+            flash("No se puede actualizar boleta o CURP existentes")
+            return redirect(url_for('Index'))
 
 @app.route('/desactivar', methods = ['POST', 'GET'])
 def desactivar():
@@ -98,9 +107,10 @@ def delete():
 
         cur = mysql.connection.cursor()
         cur.execute("""
-            DELETE FROM tAlumnos
+            UPDATE tAlumnos
+            SET activo=%s
             WHERE id=%s
-        """, (id_data))
+        """, (2, id_data))
         mysql.connection.commit()
         return redirect(url_for('Index'))
 
