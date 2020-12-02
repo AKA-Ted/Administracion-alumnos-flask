@@ -21,6 +21,7 @@ def Index():
     cur.close()
     return render_template('index.html', alumnos = data)
 
+
 @app.route('/insert', methods = ['POST'])
 def insert():
     if request.method == "POST":
@@ -69,6 +70,7 @@ def update():
             flash("No se puede actualizar boleta o CURP existentes")
             return redirect(url_for('Index'))
 
+
 @app.route('/desactivar', methods = ['POST', 'GET'])
 def desactivar():
     if request.method == 'POST':
@@ -84,6 +86,7 @@ def desactivar():
         mysql.connection.commit()
         return redirect(url_for('Index'))
 
+
 @app.route('/activar', methods = ['POST', 'GET'])
 def activar():
     if request.method == 'POST':
@@ -98,6 +101,7 @@ def activar():
         """, (1, id_data))
         mysql.connection.commit()
         return redirect(url_for('Index'))
+
 
 @app.route('/delete', methods = ['POST', 'GET'])
 def delete():
