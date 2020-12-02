@@ -36,12 +36,12 @@ def insert():
             cur.execute("""
                 INSERT INTO tAlumnos(boleta, nombre, aPaterno, aMaterno, CURP, activo) 
                 VALUES (%s, %s, %s, %s, %s, %s)
-                """, (boleta, aPat, aMat, nombre, curp, 1))
+                """, (boleta, aPat, aMat, nombre, curp, 0))
             mysql.connection.commit()
 
             return redirect(url_for('Index'))
         except:
-            flash("No se peude agregar boleta o CURP existentes")
+            flash("No se puede agregar boleta o CURP existentes")
             return redirect(url_for('Index'))
 
 
